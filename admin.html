@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Admin Dashboard</title>
+</head>
+<body>
+  <h2>Admin Dashboard</h2>
+  <div id="tickets"></div>
+  <button onclick="logout()">Logout</button>
+
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
+  <script src="firebase-config.js"></script>
+
+  <script>
+    const adminEmails = ["admin@example.com"]; // Add your admin email here
+
+    auth.onAuthStateChanged(user => {
+      if (!user || !adminEmails.includes(user.email)) {
+        alert("Access denied. Not an admin.");
+        window.location.href = "index.html";
+        return;
+      } else {
+        loadTickets();
+      }
+    });
+
+    function loadTickets() {
+      db.collection("tickets").orderBy("createdAt", "desc").onSnapshot(snapshot => {
+        let html = "<ul>";
+        snapshot.forEach(doc => {
+          const t = doc.data();
+          html += `
+            <li>
+              <b>${t.issue}</b> [${t.status}]<br>
+              Priority: ${t.priority} | Category: ${t.category}<br>
+              Assigned to: ${t.assignedTo || "Unassigned"}<br>
+              ${t.responseNotes && t.responseNotes.length > 0 ? "<b>Notes:</b><ul>" + t.responseNotes.map(n => `<li>${n}</li>`).join("") + "</ul>" : ""}
+              <button onclick="assignTicket('${doc.id}')">Assign</button>
+              <button onclick="resolveTicket('${doc.id}')">Resolve</button>
+              <button onclick="addNote('${doc.id}')">Add Note</button>
+              <br><br>
+            </li>
+          `;
+        });
+        html += "</ul>";
+        document.getElementById("tickets").innerHTML = html;
+      });
+    }
+
+    function assignTicket(id) {
+      const name = prompt("Enter name/email to assign:");
+      if (name) {
+        db.collection("tickets").doc(id).update({
+          assignedTo: name
+        })
+        .then(() => alert("Ticket assigned successfully!"))
+        .catch(error => {
+          console.error("Error assigning ticket:", error);
+          alert("Failed to assign ticket.");
+        });
+      }
+    }
+
+    function resolveTicket(id) {
+      db.collection("tickets").doc(id).update({
+        status: "Resolved"
+      })
+      .then(() => alert("Ticket resolved!"))
+      .catch(error => {
+        console.error("Error resolving ticket:", error);
+        alert("Failed to resolve ticket.");
+      });
+    }
+
+    function addNote(id) {
+      const note = prompt("Enter note/update:");
+      if (note) {
+        db.collection("tickets").doc(id).update({
+          responseNotes: firebase.firestore.FieldValue.arrayUnion("Admin: " + note)
+        })
+        .then(() => alert("Note added!"))
+        .catch(error => {
+          console.error("Error adding note:", error);
+          alert("Failed to add note.");
+        });
+      }
+    }
+
+    function logout() {
+      auth.signOut().then(() => window.location.href = "login.html");
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,15 @@
+body {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+}
+input, select {
+  margin: 10px 0;
+  padding: 8px;
+  width: 300px;
+}
+button {
+  padding: 10px;
+  background: #4CAF50;
+  color: white;
+  border: none;
+}
