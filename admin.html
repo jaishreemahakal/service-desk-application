@@ -1,18 +1,24 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <title>Admin Dashboard</title>
-</head>
-<body>
-  <h2>Admin Dashboard</h2>
-  <div id="tickets"></div>
-  <button onclick="logout()">Logout</button>
-
+  <link rel="stylesheet" href="style.css">
   <!-- Firebase SDKs -->
   <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
   <script src="firebase-config.js"></script>
+
+</head>
+
+<body>
+  <div class="admincontainer">
+  <h2>Admin Dashboard</h2>
+  <div id="tickets"></div>
+  <button onclick="logout()">Logout</button>
+
+ 
 
   <script>
     const adminEmails = ["admin@example.com"]; // Add your admin email here
@@ -32,18 +38,19 @@
         let html = "<ul>";
         snapshot.forEach(doc => {
           const t = doc.data();
-          html += `
-            <li>
-              <b>${t.issue}</b> [${t.status}]<br>
-              Priority: ${t.priority} | Category: ${t.category}<br>
-              Assigned to: ${t.assignedTo || "Unassigned"}<br>
-              ${t.responseNotes && t.responseNotes.length > 0 ? "<b>Notes:</b><ul>" + t.responseNotes.map(n => `<li>${n}</li>`).join("") + "</ul>" : ""}
-              <button onclick="assignTicket('${doc.id}')">Assign</button>
-              <button onclick="resolveTicket('${doc.id}')">Resolve</button>
-              <button onclick="addNote('${doc.id}')">Add Note</button>
-              <br><br>
-            </li>
-          `;
+          html += `<li>
+          <b>${t.issue}</b> [${t.status}]<br>
+          <strong>User:</strong> ${t.userEmail || "Unknown"}<br>
+          Priority: ${t.priority} | Category: ${t.category}<br>
+          Assigned to: ${t.assignedTo || "Unassigned"}<br>
+          ${t.responseNotes && t.responseNotes.length > 0 ? "<b>Notes:</b><ul>" + t.responseNotes.map(n => `<li>${n}</li>`).join("") + "</ul>" : ""}
+          <button onclick="assignTicket('${doc.id}')">Assign</button>
+          <button onclick="resolveTicket('${doc.id}')">Resolve</button>
+          <button onclick="addNote('${doc.id}')">Add Note</button>
+          <br><br>
+         </li>`
+         ;
+
         });
         html += "</ul>";
         document.getElementById("tickets").innerHTML = html;
@@ -56,11 +63,11 @@
         db.collection("tickets").doc(id).update({
           assignedTo: name
         })
-        .then(() => alert("Ticket assigned successfully!"))
-        .catch(error => {
-          console.error("Error assigning ticket:", error);
-          alert("Failed to assign ticket.");
-        });
+          .then(() => alert("Ticket assigned successfully!"))
+          .catch(error => {
+            console.error("Error assigning ticket:", error);
+            alert("Failed to assign ticket.");
+          });
       }
     }
 
@@ -68,11 +75,11 @@
       db.collection("tickets").doc(id).update({
         status: "Resolved"
       })
-      .then(() => alert("Ticket resolved!"))
-      .catch(error => {
-        console.error("Error resolving ticket:", error);
-        alert("Failed to resolve ticket.");
-      });
+        .then(() => alert("Ticket resolved!"))
+        .catch(error => {
+          console.error("Error resolving ticket:", error);
+          alert("Failed to resolve ticket.");
+        });
     }
 
     function addNote(id) {
@@ -81,11 +88,11 @@
         db.collection("tickets").doc(id).update({
           responseNotes: firebase.firestore.FieldValue.arrayUnion("Admin: " + note)
         })
-        .then(() => alert("Note added!"))
-        .catch(error => {
-          console.error("Error adding note:", error);
-          alert("Failed to add note.");
-        });
+          .then(() => alert("Note added!"))
+          .catch(error => {
+            console.error("Error adding note:", error);
+            alert("Failed to add note.");
+          });
       }
     }
 
@@ -93,5 +100,7 @@
       auth.signOut().then(() => window.location.href = "login.html");
     }
   </script>
+  </div>
 </body>
+
 </html>

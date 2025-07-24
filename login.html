@@ -4,6 +4,7 @@
   <title>Login</title>
 </head>
 <body>
+  <div class="logcontainer">
   <h2>Login</h2>
   <input id="email" type="email" placeholder="Email"><br><br>
   <input id="password" type="password" placeholder="Password"><br><br>
@@ -14,6 +15,7 @@
   <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
   <script src="firebase-config.js"></script>
+  <link rel="stylesheet" href="style.css">
 
   <script>
     const adminEmails = ["admin@example.com"]; // Add your admin email(s)
@@ -39,5 +41,6 @@
         });
     }
   </script>
+  </iv>
 </body>
 </html>

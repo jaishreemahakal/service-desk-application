@@ -7,9 +7,13 @@
 <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
 <script src="firebase-config.js"></script>
+<link rel="stylesheet" href="style.css">
+
+
 
 </head>
 <body>
+  
   <h2>Dashboard</h2>
   <a href="ticket.html">Raise Ticket</a><br><br>
   <div id="tickets"></div>
@@ -44,5 +48,6 @@
       auth.signOut().then(() => window.location.href = "login.html");
     }
   </script>
+ 
 </body>
 </html>
