@@ -9,3 +9,28 @@ Follow this link
 
 https://servicedeskapplication.web.app/
 
+# Workflow
+USER Workflow
+
+Register first using email id
+
+login in to your account
+
+click on raise ticket
+
+fill the blanks
+
+clikc on the submit button
+
+See your all submiited tickets on dashboard
+
+ADMIN Workflow
+
+Only access for admin user using their assigned email ids and passwords
+
+login in admin account
+
+admin can see all the sumbits amoong all the users
+
+Also add notes, reslove specific raised ticket
+
