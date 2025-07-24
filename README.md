@@ -7,5 +7,5 @@ Develop a Service Desk Application allowing users to raise tickets for various i
 
 Follow this link
 
-https://github.com/jaishreemahakal/service-desk-application.git
+https://servicedeskapplication.web.app/
 
